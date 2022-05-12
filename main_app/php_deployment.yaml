@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+  labels:
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: php
+        tier: backend
+    spec:
+      volumes:
+      - name: depl-nfs
+        persistentVolumeClaim:
+          claimName: pvc-nfs
+      containers:
+      - name: php
+        image: abdulbadi1524/php:7.2-apache
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "100Mi"
+        volumeMounts:
+        - name: depl-nfs
+          mountPath: /code
+        securityContext:
+            capabilities:
+              add: ["SYS_ADMIN"]
+        workingDir: /code/app
+        lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "mount --bind /code/app/ /var/www/html/; ln -sf /code/conf/vhost.conf /etc/apache2/sites-available/000-default.conf; ln -sf /code/conf/apache2.conf /etc/apache2/apache2.conf; a2enmod rewrite; service apache2 reload;"]
+                #args:
+                #- -c
+                #- >
+                #  while true;
+                #  do
+                #  ln -s /code/app/* /var/www/html/;
+                #  ln -sf /code/conf/vhost.conf /etc/apache2/sites-available/000-default.conf;
+                #  done
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: php
+  labels:
+    tier: backend
+spec:
+  ports:
+    - protocol: TCP
+      port: 8181
+      targetPort: 80
+  selector:
+    app: php
+    tier: backend
+  type: LoadBalancer
