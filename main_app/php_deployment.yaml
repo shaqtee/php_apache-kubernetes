@@ -39,15 +39,17 @@ spec:
         lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "mount --bind /code/app/ /var/www/html/; ln -sf /code/conf/vhost.conf /etc/apache2/sites-available/000-default.conf; ln -sf /code/conf/apache2.conf /etc/apache2/apache2.conf; a2enmod rewrite; service apache2 reload;"]
-                #args:
-                #- -c
-                #- >
-                #  while true;
-                #  do
-                #  ln -s /code/app/* /var/www/html/;
-                #  ln -sf /code/conf/vhost.conf /etc/apache2/sites-available/000-default.conf;
-                #  done
+                command:
+                - /bin/bash
+                - -c
+                - >
+                  mount --bind /code/app/ /var/www/html/;
+                  ln -sf /code/conf/vhost.conf /etc/apache2/sites-available/000-default.conf;
+                  ln -sf /code/conf/apache2.conf /etc/apache2/apache2.conf;
+                  a2enmod rewrite; service apache2 reload;
+                  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash;
+                  . "$HOME/.nvm/nvm.sh";
+                  nvm install 7.2;
 
 ---
 

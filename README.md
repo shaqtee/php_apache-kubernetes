@@ -42,9 +42,11 @@ Simpel project untuk konfigurasi kubernetes Phpapp & MySQL dengan NFS(Network Fi
 ## Lounch Kubernetes & Deleting Test
 
 ```
+mysql
 kubectl apply -f nfs-mysql.yml,mysql-workload.yml,phpmyadmin-workload.yml
 kubectl delete -f nfs-mysql.yml,mysql-workload.yml,phpmyadmin-workload.yml
 
-kubectl apply -f nfs-pv.yml,nfs-pvc.yml,php_deployment.yaml`
-kubectl delete -f nfs-pv.yml,nfs-pvc.yml,php_deployment.yaml`
+main_app
+kubectl apply -f nfs-pv.yml,nfs-pvc.yml,php_deployment.yaml
+kubectl delete -f nfs-pv.yml,nfs-pvc.yml,php_deployment.yaml
 ```

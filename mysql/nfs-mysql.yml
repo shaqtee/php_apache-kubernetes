@@ -15,6 +15,6 @@ spec:
     namespace: default
     name: mysql-pv-claim
   nfs:
-    server: 172.22.105.23
+    server: 172.28.251.39
     path: "/srv/nfs/db_mysql/"
   persistentVolumeReclaimPolicy: Retain

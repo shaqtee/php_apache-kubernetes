@@ -12,6 +12,6 @@ spec:
     namespace: default
     name: pvc-nfs
   nfs:
-    server: 172.22.105.23
+    server: 172.28.251.39
     path: "/srv/nfs/laramysql/"
   persistentVolumeReclaimPolicy: Retain
